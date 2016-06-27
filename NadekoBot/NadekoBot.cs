@@ -233,6 +233,23 @@ namespace NadekoBot
                 await OwnerPrivateChannel.SendMessage(message).ConfigureAwait(false);
         }
 
+        public static bool HasOwnerName(ulong id, Channel c)
+        {
+            string name = c.GetUser(id).Name;
+            for (int a = 0; a < Creds.OwnerIds.Length; a++)
+            {
+                User owner = c.GetUser(Creds.OwnerIds[a]);
+                if (owner != null)
+                {
+                    if (owner.Name.Equals(name))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         private static bool repliedRecently = false;
         private static async void Client_MessageReceived(object sender, MessageEventArgs e)
         {
