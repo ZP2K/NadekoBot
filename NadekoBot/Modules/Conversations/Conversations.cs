@@ -159,6 +159,31 @@ namespace NadekoBot.Modules.Conversations
                         }
                     });
 
+                cgb.CreateCommand("insult")
+                    .Parameter("mention", ParameterType.Required)
+                    .Description("Insults @X person.\n**Usage**: @NadekoBot insult @X.")
+                    .Do(async e =>
+                    {
+                        var u = e.Channel.FindUsers(e.GetArg("mention")).FirstOrDefault();
+                        if (u == null)
+                        {
+                            await e.Channel.SendMessage("Invalid user specified.").ConfigureAwait(false);
+                            return;
+                        }
+
+                        if (NadekoBot.IsOwner(u.Id))
+                        {
+                            await e.Channel.SendMessage("I would never insult my master <3").ConfigureAwait(false);
+                            return;
+                        }
+                        if (NadekoBot.HasOwnerName(u.Id, e.Channel))
+                        {
+                            await e.Channel.SendMessage("Don't steal my master's name, thief!").ConfigureAwait(false);
+                            return;
+                        }
+                        await e.Channel.SendMessage(u.Mention + NadekoBot.Locale.Insults[rng.Next(0, NadekoBot.Locale.Insults.Length)]).ConfigureAwait(false);
+                    });
+
                 cgb.CreateCommand("fire")
                     .Description("Shows a unicode fire message. Optional parameter [x] tells her how many times to repeat the fire.\n**Usage**: @NadekoBot fire [x]")
                     .Parameter("times", ParameterType.Optional)
