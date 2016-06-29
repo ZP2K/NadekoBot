@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace NadekoBot.Classes.JSONModels {
     public class LocalizedStrings {
@@ -6,6 +7,8 @@ namespace NadekoBot.Classes.JSONModels {
             " You are a poop.", " You're a jerk.",
             " I will eat you when I get my powers back."
         };
+
+        public List<string> InsultList { get; set; }
 
         public string[] Praises { get; set; } = {
             " You are cool.",

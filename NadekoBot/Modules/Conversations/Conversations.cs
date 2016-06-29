@@ -181,7 +181,7 @@ namespace NadekoBot.Modules.Conversations
                             await e.Channel.SendMessage("Don't steal my master's name, thief!").ConfigureAwait(false);
                             return;
                         }
-                        await e.Channel.SendMessage(u.Mention + NadekoBot.Locale.Insults[rng.Next(0, NadekoBot.Locale.Insults.Length)]).ConfigureAwait(false);
+                        await e.Channel.SendMessage(u.Mention + NadekoBot.Locale.InsultList[rng.Next(0, NadekoBot.Locale.InsultList.Count)]).ConfigureAwait(false);
                     });
 
                 cgb.CreateCommand("fire")

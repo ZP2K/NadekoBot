@@ -967,6 +967,24 @@ namespace NadekoBot.Modules.Administration
                         await e.Channel.SendMessage(":ok:").ConfigureAwait(false);
                     });
 
+                cgb.CreateCommand(Prefix + "addinsult")
+                    .Description($"Adds an insult to Nadeko's insult list.**Bot Owner Only!**\n**Usage**: {Prefix}addinsult kill yourself")
+                    .Parameter("insult", ParameterType.Unparsed)
+                    .AddCheck(SimpleCheckers.OwnerOnly())
+                    .Do(async e =>
+                    {
+                        string NewInsult = e.GetArg("insult");
+                        NadekoBot.Locale.InsultList.Add(" " + NewInsult);
+                        if (NewInsult.IndexOf(" ") != -1)
+                        {
+                            await e.Channel.SendMessage("I learned a new phrase!! \"" + NewInsult + "\"").ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            await e.Channel.SendMessage("I learned a new word!! \"" + NewInsult + "\"").ConfigureAwait(false);
+                        }
+                    });
+
                 cgb.CreateCommand(Prefix + "whoplays")
                     .Description("Shows a list of users who are playing the specified game.")
                     .Parameter("game", ParameterType.Unparsed)

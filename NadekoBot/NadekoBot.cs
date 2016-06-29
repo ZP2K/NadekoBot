@@ -46,7 +46,7 @@ namespace NadekoBot
         private static void Main()
         {
             Console.OutputEncoding = Encoding.Unicode;
-
+            NadekoBot.Locale.InsultList = NadekoBot.Locale.Insults.ToList<string>();
             try
             {
                 File.WriteAllText("data/config_example.json", JsonConvert.SerializeObject(new Configuration(), Formatting.Indented));
