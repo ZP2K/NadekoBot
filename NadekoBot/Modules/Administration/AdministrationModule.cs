@@ -977,11 +977,11 @@ namespace NadekoBot.Modules.Administration
                         NadekoBot.Locale.InsultList.Add(" " + NewInsult);
                         if (NewInsult.IndexOf(" ") != -1)
                         {
-                            await e.Channel.SendMessage("I learned a new phrase!! \"" + NewInsult + "\"").ConfigureAwait(false);
+                            await e.Channel.SendMessage("i learned a new phrase!!!!!!!!!!! \"" + NewInsult + "\"").ConfigureAwait(false);
                         }
                         else
                         {
-                            await e.Channel.SendMessage("I learned a new word!! \"" + NewInsult + "\"").ConfigureAwait(false);
+                            await e.Channel.SendMessage("i learned a new word!!!!!!!!!! \"" + NewInsult + "\"").ConfigureAwait(false);
                         }
                     });
 

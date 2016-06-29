@@ -380,6 +380,23 @@ namespace NadekoBot.Modules.Permissions.Classes
             Task.Run(() => WriteServerToJson(serverPerms));
         }
 
+        public static void SetUserCommandPermissionNoAsync(User user, string commandName, bool value)
+        {
+            var server = user.Server;
+            var serverPerms = PermissionsDict.GetOrAdd(server.Id,
+                new ServerPermissions(server.Id, server.Name));
+            if (!serverPerms.UserPermissions.ContainsKey(user.Id))
+                serverPerms.UserPermissions.Add(user.Id, new Permissions(user.Name));
+
+            var commands = serverPerms.UserPermissions[user.Id].Commands;
+
+            if (commands.ContainsKey(commandName))
+                commands[commandName] = value;
+            else
+                commands.TryAdd(commandName, value);
+            WriteServerToJson(serverPerms);
+        }
+
         public static void SetServerWordPermission(Server server, bool value)
         {
             var serverPerms = PermissionsDict.GetOrAdd(server.Id,

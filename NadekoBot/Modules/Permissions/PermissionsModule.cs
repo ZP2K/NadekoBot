@@ -484,10 +484,24 @@ namespace NadekoBot.Modules.Permissions
                         {
                             var command = PermissionHelper.ValidateCommand(e.GetArg("command"));
                             var state = PermissionHelper.ValidateBool(e.GetArg("bool"));
-                            var user = PermissionHelper.ValidateUser(e.Server, e.GetArg("user"));
-
-                            PermissionsHandler.SetUserCommandPermission(user, command, state);
-                            await e.Channel.SendMessage($"Command **{command}** has been **{(state ? "enabled" : "disabled")}** for user **{user.Name}**.").ConfigureAwait(false);
+                            string user = e.GetArg("user");
+                            if (user.Equals("all"))
+                            {
+                                foreach(var client in e.Server.Users)
+                                {
+                                    if (client != null && !client.IsBot)
+                                    {
+                                        PermissionsHandler.SetUserCommandPermissionNoAsync(client, command, state);
+                                    }
+                                }
+                                await e.Channel.SendMessage($"Command **{command}** has been **{(state ? "enabled" : "disabled")}** for **fucking everyone**.").ConfigureAwait(false);
+                            }
+                            else
+                            {
+                                var specifiedUser = PermissionHelper.ValidateUser(e.Server, e.GetArg("user"));
+                                PermissionsHandler.SetUserCommandPermission(specifiedUser, command, state);
+                                await e.Channel.SendMessage($"Command **{command}** has been **{(state ? "enabled" : "disabled")}** for user **{specifiedUser.Name}**.").ConfigureAwait(false);
+                            }
                         }
                         catch (ArgumentException exArg)
                         {
