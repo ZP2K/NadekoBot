@@ -961,7 +961,7 @@ namespace NadekoBot.Modules.Administration
                     {
                         foreach (var ch in NadekoBot.Client.Servers.Select(s => s.DefaultChannel))
                         {
-                            await ch.SendMessage(e.GetArg("msg")).ConfigureAwait(false);
+                            await ch.SendMessageNormal(e.GetArg("msg")).ConfigureAwait(false);
                         }
 
                         await e.Channel.SendMessage(":ok:").ConfigureAwait(false);

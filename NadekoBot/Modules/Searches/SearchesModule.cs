@@ -383,6 +383,65 @@ $@"🌍 **Weather for** 【{obj["target"]}】
                         await e.Channel.SendMessage("`" + JObject.Parse(response)["joke"].ToString() + "` 😆").ConfigureAwait(false);
                     });
 
+                cgb.CreateCommand(Prefix + "longtts")
+                    .Alias(Prefix + "ltts")
+                    .Parameter("text", ParameterType.Unparsed)
+                    .Description("Reads out text to speach in chunks.")
+                    .Do(async e =>
+                    {
+                        string fullText = e.GetArg("text");
+                        int curIndex = 0;
+                        int startIndex = 0;
+                        int curChar = 0;
+                        string[] allWords = fullText.Split(' ');
+                        List<string> ttsOutput = new List<string>();
+                        for(;curIndex < allWords.Length; curIndex++)
+                        {
+                            curChar += allWords[curIndex].Length;
+                            if(curChar > 90)
+                            {
+                                string newTTS = "";
+                                if (startIndex == curIndex)
+                                {
+                                    newTTS = allWords[startIndex];
+                                    startIndex++;
+                                }
+                                else
+                                {
+                                    for (int a = startIndex; a < curIndex; a++)
+                                    {
+                                        newTTS += allWords[a] + " ";
+                                    }
+                                    startIndex = curIndex;
+                                }
+                                ttsOutput.Add(newTTS);
+                                curChar = 0;
+                            }
+                        }
+                        {
+                            string newTTS = "";
+                            for (int a = startIndex; a < curIndex; a++)
+                            {
+                                newTTS += allWords[a] + " ";
+                            }
+                            startIndex = curIndex;
+                            ttsOutput.Add(newTTS);
+                        }
+                        var nadeko = e.Server.GetUser(NadekoBot.Creds.BotId);
+                        string nickBackup = nadeko.Nickname;
+                        await nadeko.Edit(false, false, null, null, "֐");
+                        foreach (var tts in ttsOutput)
+                        {
+                            Message x = await e.Channel.SendTTSMessage(tts);
+                            while(x.State == MessageState.Queued)
+                            {
+                                System.Threading.Thread.Sleep(1);
+                            }
+                        }
+                        await nadeko.Edit(false, false, null, null, nickBackup);
+                    });
+
+
                 cgb.CreateCommand(Prefix + "chucknorris")
                     .Alias(Prefix + "cn")
                     .Description("Shows a random chucknorris joke from <http://tambal.azurewebsites.net/joke/random>")
